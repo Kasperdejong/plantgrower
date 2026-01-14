@@ -1,0 +1,42 @@
+{
+  "name": "handpuppets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^39.2.7",
+    "electron-builder": "^26.4.0"
+  },
+"build": {
+    "appId": "com.kasper.handpuppets",
+    "mac": {
+      "target": "dmg",
+      "identity": null,
+      "entitlements": "entitlements.mac.plist", 
+      "entitlementsInherit": "entitlements.mac.plist",
+      "extendInfo": {
+        "NSCameraUsageDescription": "This app needs access to the camera to track your hands for the puppets."
+      }
+    },
+    "files": [
+      "**/*",
+      "!venv", 
+      "!dist",
+      "!handpuppets.py", 
+      "!*.spec"
+    ],
+    "extraResources": [
+      {
+        "from": "dist/handpuppets",
+        "to": "handpuppets"
+      }
+    ]
+  }
+}

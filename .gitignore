@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+venv/
+env/
+__pycache__/
+
+# Build Output
+dist/
+build/
+*.spec
+
+# System files
+.DS_Store
+*.pem
