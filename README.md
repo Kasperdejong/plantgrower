@@ -2,6 +2,8 @@
 
 A desktop application that uses Python (MediaPipe/OpenCV) for hand tracking and Electron for the UI. The two processes communicate via a local Socket.IO connection.
 
+## If you are seeing this in github and are on macbook(CLICK THE MAC RELEASE ON THE RIGHT TO INSTALL THE APP)
+
 ## Prerequisites
 
 1.  **Python 3.10+**  
@@ -26,23 +28,39 @@ This handles the AI and Camera logic.
 
 ### On macOS / Linux:
 
+```
 python3 -m venv venv
+```
 
 #### activate venv (important!)
 
+```
 source venv/bin/activate
+```
 
+#### install requirements
+
+```
 pip install -r requirements.txt
+```
 
 ### On Windows
 
+```
 python -m venv venv
+```
 
 #### activate venv (important!)
 
+```
 venv\Scripts\activate
+```
 
+#### install requirements
+
+```
 pip install -r requirements.txt
+```
 
 ## Install Node.js Dependencies
 
