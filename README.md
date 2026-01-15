@@ -1,4 +1,4 @@
-# Hand Puppets (Python + Electron + MediaPipe)
+# Plantgrower: let it grow and burn edition (Python + Electron + MediaPipe)
 
 A desktop application that uses Python (MediaPipe/OpenCV) for hand tracking and Electron for the UI. The two processes communicate via a local Socket.IO connection.
 
@@ -24,7 +24,7 @@ cd plantgrower
 
 ## Create the Python environment
 
-This handles the AI and Camera logic.
+This handles the AI, Camera logic, and Plant database.
 
 ### On macOS / Linux:
 
@@ -79,6 +79,20 @@ openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 36
 Windows:
 You will need to generate cert.pem and key.pem using OpenSSL or a tool like Git Bash, and place them in the root folder.
 
+## Custom App Icon Generator
+
+This project includes a script to fetch a random plant from the internal JSON database and convert it into a macOS App Icon.
+Make sure your venv is active.
+Run the script:
+
+```
+python create_icon.py
+```
+
+A preview window will pop up.
+Don't like it? Close the window and run the command again.
+Like it? Proceed to the Build step.
+
 # Development mode (Testing)
 
 Let electron handle running the python script
@@ -105,7 +119,7 @@ This bundles MediaPipe, OpenCV, and your script into a single binary file.
 Make sure venv is active!
 
 ```
-pyinstaller handpuppets.spec
+pyinstaller plantgrower.spec
 ```
 
 (Type y if asked to overwrite).
@@ -119,8 +133,7 @@ npx electron-builder
 
 Where is my app?
 Check the dist/ folder.
-macOS: You will see Hand Puppets.dmg.
-Windows: You will see Hand Puppets Setup.exe.
+macOS: You will see PlantGrower-1.0.0.dmg.
 
 ## Troubleshooting
 
@@ -135,7 +148,7 @@ tccutil reset Camera
    If the app crashed previously, a "Zombie" Python process might still be holding the camera or port 5050. Kill it:
 
 ```
-killall handpuppets
+killall plantgrower
 ```
 
 # OR
@@ -148,5 +161,5 @@ killall Python
    Since the app isn't signed by Apple ($99/year), your friends might see a security warning. They need to run this command once after moving the app to their Applications folder:
 
 ```
-xattr -cr /Applications/"handpuppets.app"
+xattr -cr /Applications/"plantgrower.app"
 ```
