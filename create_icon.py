@@ -5,7 +5,7 @@ import random
 from PIL import Image
 from io import BytesIO
 
-# --- CONFIGURATION ---
+# config
 JSON_PATH = os.path.join("JSON", "plants.json")
 BUILD_DIR = "build"
 ICON_NAME = "icon.icns"

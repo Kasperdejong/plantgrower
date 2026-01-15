@@ -45,7 +45,7 @@ def resource_path(relative_path):
 app = Flask(__name__, template_folder=resource_path('templates'))
 socketio = SocketIO(app, cors_allowed_origins='*', async_mode='threading')
 
-# --- LOGIC START ---
+# logic start
 
 def overlay_image_alpha(img, img_overlay, x, y, width, height):
     try:
@@ -99,7 +99,7 @@ class PlantSystem:
         self.load_plant_data()
 
     def load_plant_data(self):
-        # CHANGED: Use resource_path to find JSON
+        # Use resource_path to find JSON
         json_path = resource_path(os.path.join("JSON", "plants.json"))
         print(f"🌐 Connecting to Plant Database via {json_path}...")
         try:
@@ -205,8 +205,7 @@ class Particle:
         elif self.element_type == "Ash":
             col = int(50 + (self.life * 100)); cv2.circle(frame, (ix, iy), self.size, (col, col, col), -1)
 
-# --- THREADING ARCHITECTURE ---
-
+# threading architecture
 def run_camera_loop():
     print("🎥 Starting Camera Loop (Main Thread)")
     mp_holistic = mp.solutions.holistic
