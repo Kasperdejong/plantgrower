@@ -178,13 +178,25 @@ class PlantSystem:
 class Particle:
     def __init__(self, x, y, element_type, velocity=None):
         self.x = x; self.y = y; self.element_type = element_type; self.life = 1.0 
+        
         if self.element_type == "Fire":
             if velocity: self.vx, self.vy = velocity[0] + random.uniform(-2,2), velocity[1] + random.uniform(-2,2)
             else: self.vx, self.vy = random.uniform(-2,2), random.uniform(-4,-9)
             self.decay = 0.06; self.size = random.randint(4, 10)
+        
         elif self.element_type == "Water":
             self.vx = random.uniform(-0.5, 0.5); self.vy = random.uniform(5, 15)     
             self.size = random.randint(2, 5); self.decay = 0.04
+            
+            # --- COLOR CHANGE HERE ---
+            # BGR format: Blue (High), Green (Random Med/High), Red (Low/None)
+            # This ensures it is never white (255, 255, 255)
+            # It will range from Deep Blue to Aqua/Cyan
+            b = 255
+            g = random.randint(150, 230)
+            r = random.randint(0, 50)
+            self.color = (b, g, r)
+
         elif self.element_type == "Ash":
             self.vx, self.vy = random.uniform(-1, 1), random.uniform(-1, -3)
             self.size = random.randint(2, 5); self.decay = 0.03
@@ -197,11 +209,15 @@ class Particle:
     def draw(self, frame):
         if self.life <= 0: return
         ix, iy = int(self.x), int(self.y)
+        
         if self.element_type == "Fire":
             color = (255, 255, 255) if self.life > 0.7 else (0, 165, 255) if self.life > 0.4 else (0, 0, 200)
             cv2.circle(frame, (ix, iy), int(self.size * self.life), color, -1)
+            
         elif self.element_type == "Water":
-            cv2.line(frame, (ix, iy), (ix, int(iy - self.vy)), (255, 255, 255), self.size)
+            # Uses the blue shade calculated in __init__
+            cv2.line(frame, (ix, iy), (ix, int(iy - self.vy)), self.color, self.size)
+            
         elif self.element_type == "Ash":
             col = int(50 + (self.life * 100)); cv2.circle(frame, (ix, iy), self.size, (col, col, col), -1)
 
