@@ -190,8 +190,6 @@ class Particle:
             
             # --- COLOR CHANGE HERE ---
             # BGR format: Blue (High), Green (Random Med/High), Red (Low/None)
-            # This ensures it is never white (255, 255, 255)
-            # It will range from Deep Blue to Aqua/Cyan
             b = 255
             g = random.randint(150, 230)
             r = random.randint(0, 50)
@@ -255,11 +253,28 @@ def run_camera_loop():
         # Right Hand (Fire)
         if results.right_hand_landmarks:
             landmarks = results.right_hand_landmarks.landmark
+            
+            # --- RESTORED: SKELETON DRAWING (Yellow Lines) ---
+            for connection in hand_connections:
+                pt1 = get_coords(landmarks[connection[0]])
+                pt2 = get_coords(landmarks[connection[1]])
+                cv2.line(frame, pt1, pt2, (0, 255, 255), 2)
+            
             if is_hand_open(landmarks):
                 wrist, tip = landmarks[0], landmarks[12]
                 dx, dy = (tip.x - wrist.x), (tip.y - wrist.y)
                 dist = math.sqrt(dx*dx + dy*dy)
                 aim_vx, aim_vy = (dx / dist) * 30, (dy / dist) * 30
+                
+                # Create particles along hand connections for fuller fire
+                for connection in hand_connections:
+                    pt1 = get_coords(landmarks[connection[0]])
+                    pt2 = get_coords(landmarks[connection[1]])
+                    mid_x = int(pt1[0] + (pt2[0] - pt1[0]) * random.random())
+                    mid_y = int(pt1[1] + (pt2[1] - pt1[1]) * random.random())
+                    particles.append(Particle(mid_x, mid_y, "Fire", velocity=(aim_vx, aim_vy)))
+
+                # Create particles at landmarks
                 for lm in landmarks: 
                     particles.append(Particle(*get_coords(lm), "Fire", velocity=(aim_vx, aim_vy)))
 
