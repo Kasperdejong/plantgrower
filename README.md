@@ -18,8 +18,8 @@ A desktop application that uses Python (MediaPipe/OpenCV) for hand tracking and 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Kasperdejong/Python3d.git
-cd Python3d
+git clone https://github.com/Kasperdejong/plantgrower.git
+cd plantgrower
 ```
 
 ## Create the Python environment

@@ -1,14 +1,23 @@
-# Dependencies
-node_modules/
-venv/
-env/
+# Python
 __pycache__/
+*.py[cod]
+venv/
+.env
 
-# Build Output
-dist/
-build/
-*.spec
+# Node
+node_modules/
+npm-debug.log
 
-# System files
+# Mac
 .DS_Store
-*.pem
+
+dist/
+
+# We ignore build/ because it generates temp files
+# BUT if you love a specific icon you made, you can force add it later.
+build/
+
+# Certificates (Generally good practice not to commit these, 
+# but for a local app it's up to you. Safest to ignore.)
+cert.pem
+key.pem

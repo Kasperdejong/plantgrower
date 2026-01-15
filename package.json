@@ -1,47 +1,46 @@
 {
-  "name": "handpuppets",
+  "name": "plantgrower",
   "version": "1.0.0",
-  "description": "",
+  "description": "AR Plant Growing App",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "electron": "^39.2.7",
-    "electron-builder": "^26.4.0"
+    "electron": "^26.0.0",
+    "electron-builder": "^24.6.0"
   },
-"build": {
-    "appId": "com.kasper.handpuppets",
+  "build": {
+    "appId": "com.kasper.plantgrower",
     "directories": {
       "buildResources": "build"
     },
-    "icon": "build/handpuppet_idle.icns",
     "mac": {
       "target": "dmg",
-      "icon": "build/handpuppet_idle.icns", 
-      "identity": null,
+      "icon": "build/icon.icns", 
       "entitlements": "entitlements.mac.plist",
       "entitlementsInherit": "entitlements.mac.plist",
       "extendInfo": {
-        "NSCameraUsageDescription": "Hand Puppets needs the camera to track your movements."
+        "NSCameraUsageDescription": "PlantGrower needs camera access to track your hand movements."
       }
     },
     "files": [
       "**/*",
       "!venv",
       "!dist",
-      "!handpuppets.py",
+      "!plantgrower.py",
       "!*.spec",
       "!build" 
     ],
     "extraResources": [
       {
-        "from": "dist/handpuppets",
-        "to": "handpuppets"
+        "from": "dist/plantgrower",
+        "to": "plantgrower"
       }
     ]
   }

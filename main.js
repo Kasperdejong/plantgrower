@@ -4,7 +4,7 @@ const { spawn, execSync } = require('child_process');
 const fs = require('fs');
 
 // Debug Logger
-const logPath = path.join(app.getPath('desktop'), 'debug_electron.txt');
+const logPath = path.join(app.getPath('desktop'), 'debug_plantgrower.txt');
 function log(msg) {
     try { fs.appendFileSync(logPath, `[${new Date().toLocaleTimeString()}] ${msg}\n`); } catch (e) {}
 }
@@ -18,9 +18,9 @@ let pythonProcess;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 800,
-    title: "Hand Puppets",
+    width: 1280,
+    height: 720,
+    title: "AR Plant Grower",
     fullscreen: true, 
     autoHideMenuBar: true,
     backgroundColor: '#111111',
@@ -33,6 +33,7 @@ function createWindow() {
 
   mainWindow.loadFile(path.join(__dirname, 'templates', 'loading.html'));
 
+  // Note: plantgrower.py runs on port 5050 in the updated code
   const startUrl = 'https://127.0.0.1:5050'; 
 
   const loadWindow = () => {
@@ -53,7 +54,6 @@ function createWindow() {
   });
 }
 
-// ask for camera permission
 async function checkPermissionsAndStart() {
   if (process.platform === 'darwin') {
     log("Checking Camera Permissions...");
@@ -75,20 +75,31 @@ function startPython() {
   let options = {};
   
   if (app.isPackaged) {
-    script = path.join(process.resourcesPath, 'handpuppets');
+    // Path: Resources/plantgrower/plantgrower (folder/executable)
+    script = path.join(process.resourcesPath, 'plantgrower', 'plantgrower');
+    
+    // Fallback: If for some reason it's just a file (like in your old project)
+    if (!fs.existsSync(script)) {
+        script = path.join(process.resourcesPath, 'plantgrower');
+    }
+
     if (fs.existsSync(script)) {
         try { fs.chmodSync(script, '755'); } catch (e) {}
     }
     options = { cwd: path.dirname(script), stdio: 'ignore' };
   } else {
-    const pythonExec = path.join(__dirname, 'venv', 'bin', 'python');
-    script = path.join(__dirname, 'handpuppets.py');
+    // Development mode
+    script = path.join(__dirname, 'plantgrower.py');
     options = { cwd: __dirname, stdio: 'pipe' };
   }
 
-  log("Spawning Python...");
+  log(`Spawning Python: ${script}`);
   try {
-      pythonProcess = spawn(app.isPackaged ? script : path.join(__dirname, 'venv', 'bin', 'python'), app.isPackaged ? [] : ['-u', script], options);
+      // If packaged, we run the file directly. If dev, we use python3 to run the .py file
+      const cmd = app.isPackaged ? script : 'python3';
+      const args = app.isPackaged ? [] : ['-u', script];
+      
+      pythonProcess = spawn(cmd, args, options);
       log(`Process Spawned. PID: ${pythonProcess ? pythonProcess.pid : 'FAIL'}`);
   } catch (e) {
       log(`Spawn Error: ${e.message}`);
@@ -101,12 +112,11 @@ function killPython() {
     pythonProcess = null;
   }
   if (process.platform === 'darwin') {
-      try { execSync('killall -9 handpuppets'); } catch (e) {}
+      try { execSync('killall -9 plantgrower'); } catch (e) {}
   }
 }
 
 app.on('ready', () => {
-  // Use the new permission check instead of starting immediately
   checkPermissionsAndStart();
 });
 
